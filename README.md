@@ -36,9 +36,9 @@ TELEGRAM_CHAT_ID="your_chat_id_here" \
 curl -fsSL https://raw.githubusercontent.com/thanadon-dev/linsec/main/setup.sh | sudo -E bash
 ```
 
-**แทนที่:**
-- `your_bot_token_here` ด้วย Token จาก BotFather
-- `your_chat_id_here` ด้วย Chat ID ของคุณ
+> **หมายเหตุ:** แทนที่ `your_bot_token_here` และ `your_chat_id_here` ด้วยค่าจริงของคุณ
+
+
 
 ---
 
