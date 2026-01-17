@@ -2,8 +2,28 @@
 set -e
 
 ### ===== REQUIRE TELEGRAM =====
+# Try to inherit from parent process environment if not set
+if [ -z "$TELEGRAM_TOKEN" ] && [ -n "$SUDO_USER" ]; then
+  PARENT_PID=$(ps -o ppid= -p $$ | tr -d ' ')
+  if [ -r "/proc/$PARENT_PID/environ" ]; then
+    TELEGRAM_TOKEN=$(tr '\0' '\n' < /proc/$PARENT_PID/environ | grep ^TELEGRAM_TOKEN= | cut -d= -f2-)
+  fi
+fi
+
+if [ -z "$TELEGRAM_CHAT_ID" ] && [ -n "$SUDO_USER" ]; then
+  PARENT_PID=$(ps -o ppid= -p $$ | tr -d ' ')
+  if [ -r "/proc/$PARENT_PID/environ" ]; then
+    TELEGRAM_CHAT_ID=$(tr '\0' '\n' < /proc/$PARENT_PID/environ | grep ^TELEGRAM_CHAT_ID= | cut -d= -f2-)
+  fi
+fi
+
 if [ -z "$TELEGRAM_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
   echo "❌ TELEGRAM_TOKEN or TELEGRAM_CHAT_ID not set"
+  echo ""
+  echo "Usage:"
+  echo "  export TELEGRAM_TOKEN='your-token'"
+  echo "  export TELEGRAM_CHAT_ID='your-chat-id'"
+  echo "  curl -fsSL https://raw.githubusercontent.com/thanadon-dev/linsec/main/setup.sh | sudo -E bash"
   exit 1
 fi
 
