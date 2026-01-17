@@ -27,10 +27,10 @@ if [ -z "$TELEGRAM_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
   exit 1
 fi
 
-### ===== AUTO RANDOM =====
-NEW_USER="u$(tr -dc a-z0-9 </dev/urandom | head -c6)"
-NEW_PASSWORD="$(tr -dc A-Za-z0-9 </dev/urandom | head -c16)"
-SSH_PORT="$(shuf -i 20000-40000 -n 1)"
+### ===== CONFIG (custom or random) =====
+NEW_USER="${SSH_USER:-u$(tr -dc a-z0-9 </dev/urandom | head -c6)}"
+NEW_PASSWORD="${SSH_PASSWORD:-$(tr -dc A-Za-z0-9 </dev/urandom | head -c16)}"
+SSH_PORT="${SSH_PORT:-$(shuf -i 20000-40000 -n 1)}"
 TIMEZONE="Asia/Bangkok"
 HOSTNAME="$(hostname)"
 SERVER_IP="$(curl -s ifconfig.me || echo unknown)"
